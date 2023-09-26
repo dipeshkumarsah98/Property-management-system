@@ -1,0 +1,35 @@
+{
+    "env": {
+        "node": true,
+        "es2021": true
+    },
+    "extends": [
+        "airbnb-base",
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "eslint-config-prettier",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "plugins": [
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "rules": {      
+       "prettier/prettier": [
+            "error",
+            {"endOfLine": "auto"},
+            {
+              "usePrettierrc": true
+            }
+          ], 
+        "no-console":"off"
+    },
+    "overrides": [
+        {
+          "files": ["**/*.ts"],
+          "rules": {
+            "import/no-unresolved": "off"
+          }
+        }
+      ]
+}
