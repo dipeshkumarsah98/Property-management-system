@@ -1,35 +1,58 @@
-# PMS PROJECT
+# Server Overview
 
-This PMS that is Property management system is the simple UI to discover the perfect Propert for your needs with our user-friendly tool that compares multiple Propert offerings. It is designed to allow users to compare between multiple properties from different places and find the right propert to get your household or businesses place.
+The server-side of the Property Management System is responsible for handling API requests, interacting with the database, and managing property data.
 
-# Running this project
+# Getting Started with the Server
 
-## Pre-requisites
+## Installation
 
-Listed the software or tools that are required to run the project.
+1. Navigate to the server directory.
+2. Run npm install to install dependencies.
+3. Set up your PostgreSQL database and update the configuration in .env.
 
-- Node.js v19.7.0 or later
-- npm v8 or later
-  Listed the software or tools that are required to run the project.
-- Node.js v19.7.0 or later
-- npm v8 or later
+# Server Technologies Used
 
-## Getting started
+- TypeScript
+- Express.js
+- PostgreSQL
 
-- Clone the repository
+# Database setup
+
+1. Create a PostgreSQL database.
+2. Update the database configuration in .env.
+
+# API Documentation
+
+Detailed API documentation can be found in the server's docs directory. You can access it by running the server and visiting /api/docs in your browser.
+
+# Project Structure
 
 ```
-git clone  <git lab template url> <project_name>
+server/
+  .env.example # .env example
+  tsconfig.json # Typescript configuration
+  Migrations # Migration file for database
+  Seeders # Seeding file for database
+  src/ # Contains the source code.
+    config/ # Configuration files
+      config.ts
+      database.config.ts # database configuration file1
+    controller/ # Request handlers.
+    middleware/ # Middlewares
+    model/ # Database models.
+    routes/ # API route definitions.
+    services/ # Controller services
+    test/ # Test code
+    utils/ # Utils code
+    app.ts # Application entry point
 ```
 
-- Install dependencies
+### Details:
 
-```
-cd <project_name>
-npm install
-```
+- `config/`: Holds the configuration files. It includes settings, constants, and environment variable handling.
+- `middleware/`: Middlewares are functions that have access to the request and response objects, and the next middleware function in the cycle.
 
-## Different command to run migration and seed
+# Different command to run migration and seed
 
 - `npm run migrate` _To run all migration_
 - `npm run migrate:undo` _To undo all migration_
@@ -40,7 +63,7 @@ npm install
 
 ## Run the project in development server
 
-```
+```bash
 npm run migrate-seed
 npm run dev
 ```
@@ -49,43 +72,22 @@ npm run dev
 
 ## Build and run the project in production
 
-```
+```bash
 npm run build
 npm start
 ```
 
-## Project Structure
-
-```
-pms-info-backend/
-  README.md
-  node_modules/
-  package.json
-  package-lock.json
-  .eslintrc.json
-  .gitignore
-  .prettierrc
-  .env.example
-  tsconfig.json
-  Migrations
-  Seeders
-  src/
-    config/
-      config.ts
-      database.config.ts
-    controller/
-    middleware/
-    services/
-    test/
-    utils/
-    app.ts
-```
-
 - Testing Purpose:
-  `npm run test`
+
+  ```bash
+  npm run test
+  ```
 
 - Linting (Make sure your code is in proper format by running):
-  `npm run lint`
+
+```bash
+npm run lint
+```
 
 - Before commit both `npm run test and npm run lint` runs one by one as it is setup using Husky.
 
