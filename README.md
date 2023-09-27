@@ -31,7 +31,7 @@ Before you begin, ensure you have met the following requirements:
 
 ## Folder Structure
 
-- `1client`: Contains the frontend code.
+- `client`: Contains the frontend code.
 - `server`: Contains the backend code.
 
 # License
