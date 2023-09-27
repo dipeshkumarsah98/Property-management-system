@@ -1,32 +1,35 @@
-# PMS PROJECT
+# Client Overview
 
-This PMS that is Property management system is the simple UI to discover the perfect Propert for your needs with our user-friendly tool that compares multiple Propert offerings. It is designed to allow users to compare between multiple properties from different places and find the right propert to get your household or businesses place.
+The client-side of the Property Management System is responsible for providing a user-friendly interface for property management tasks.
 
-# Running this project
+# Getting started with Client
 
-## Pre-requisites
+## Installation
 
-Listed the software or tools that are required to run the project.
+1. Navigate to the client directory.
+2. Run npm install to install dependencies.
+3. Run npm start to start the development server.
 
-- Node.js v19.7.0 or later
-- npm v8 or later
-  Listed the software or tools that are required to run the project.
-- Node.js v19.7.0 or later
-- npm v8 or later
+## Client Technologies Used
 
-## Getting started
+- React
+- TypeScript
 
-- Clone the repository
-
-```
-git clone  <git lab template url> <project_name>
-```
-
-- Install dependencies
+## Project Structure
 
 ```
-cd <project_name>
-npm install
+Below is a description of the primary folders in this project:
+
+client/
+  tsconfig.json # Typescript configuration
+  vite.config.ts # Vite configuration
+  src/ # Contains the source code.
+    components/ # Reusable React components.
+    data/ # Data files
+    hooks/ # Reusable hook
+    pages/ # Pages of client
+    App.tsx # Application entry point
+    main.tsx
 ```
 
 ## Different command to run
@@ -62,44 +65,6 @@ See the section about [deployment](#deployment) for more information.
 ```
 npm run build
 npm start
-```
-
-## Project Structure
-
-```
-client/
-  README.md
-  node_modules/
-  package.json
-  package-lock.json
-  .eslintrc.cjs
-  .gitignore
-  .prettierrc.cjs
-  index.html
-  tsconfig.json
-  tsconfig.node.json
-  vite.config.ts
-  src/
-    components/
-      form
-      nav
-      ui
-    context
-      _test_
-      index.ts
-    data/
-      dummy.json
-    hooks/
-      dummy.ts
-    pages/
-        Home.tsx
-        NotFound.tsx
-    App.tsx
-    App.test.tsx
-    setupTests.ts
-    index.css
-    main.tsx
-    vite-env.d.ts
 ```
 
 - Testing Purpose:
