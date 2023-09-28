@@ -17,6 +17,7 @@ Before you begin, ensure you have met the following requirements:
 2. Navigate to the client directory and follow the instructions in the client README to set up the frontend.
 3. Navigate to the server directory and follow the instructions in the server README to set up the backend.
 
+
 ## Usage
 
 1. Start the server by following the instructions in the server README.
@@ -33,6 +34,10 @@ Before you begin, ensure you have met the following requirements:
 
 - `client`: Contains the frontend code.
 - `server`: Contains the backend code.
+
+## ER Diagram
+![dbms-assignment-er-diagram](https://github.com/dipeshkumarsah98/Property-management-system/assets/63381568/ed2e8f44-0d9f-41b1-ba8c-293825dea155)
+
 
 # License
 
