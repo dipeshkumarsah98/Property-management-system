@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "migrate": "npx sequelize-cli db:migrate",
+    "migrate": "ts-node src/migrations/create-table.ts",
     "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
     "preseed:all": "npm run migrate",
     "seed:all": "npx sequelize-cli db:seed:all",
