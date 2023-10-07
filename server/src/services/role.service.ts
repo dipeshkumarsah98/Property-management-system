@@ -122,6 +122,8 @@ const updateOne = async (roleId: string, updateRoleDto: UpdateRoleDto) => {
 const remove = async (roleId: string) => {
   logger.info(`Deleting role with id ${roleId}`);
 
+  await findOne(roleId);
+
   const result = await sequelize.query(
     `
     delete from roles where roles.id = ${roleId}

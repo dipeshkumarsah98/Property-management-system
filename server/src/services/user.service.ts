@@ -1,5 +1,6 @@
 import sequelize from 'config/database.config';
 import { CreateUserDto, UpdateUserDto } from 'dto/user.dto';
+import * as roleService from 'services/role.service';
 import ValidationError from 'errors/badRequestError';
 import NotFoundError from 'errors/notFoundError';
 import { QueryTypes } from 'sequelize';
@@ -16,7 +17,10 @@ const findOneWithEmail = async (email: string) => {
   );
 
   if (result.length > 0)
-    throw new NotFoundError('Email should be unique', 'Email should be unique');
+    throw new ValidationError(
+      'Email should be unique',
+      'Email should be unique'
+    );
 
   logger.info(`Sending user with email ${email}`);
 
@@ -77,7 +81,7 @@ const findOne = async (userId: string) => {
       'No user found with given id'
     );
 
-  logger.info(`Sending product with id ${userId}`);
+  logger.info(`Sending user with id ${userId}`);
 
   return result;
 };
@@ -87,34 +91,33 @@ const updateOne = async (userId: string, updateDto: UpdateUserDto) => {
 
   await findOne(userId);
 
-  let query = ``;
+  const values: { email?: string; roleId?: string; name?: string } = {};
+  const conditions = [];
+
   if (email) {
-    query += `email='${email}',`;
+    values.email = email;
+    conditions.push('email = :email');
   }
+
   if (roleId) {
-    query += `roleid='${roleId}',`;
+    await roleService.findOne(roleId);
+    values.roleId = roleId;
+    conditions.push('roleId = :roleId');
   }
+
   if (name) {
-    query += `name = '${name}'`;
-  }
-  if (query === ``) {
-    throw new ValidationError(
-      'At lest one field should be update',
-      'At lest one field should be update'
-    );
+    values.name = name;
+    conditions.push('name = :name');
   }
 
-  logger.info(`Updating collection with id ${userId}`);
+  const query = `UPDATE users SET ${conditions.join(', ')} WHERE id = :userId;`;
 
-  const updatedUser = await sequelize.query(
-    `
-    update users set ${query} where users.id = ${userId};
- `,
-    {
-      type: QueryTypes.UPDATE,
-    }
-  );
-  return updatedUser;
+  await sequelize.query(query, {
+    type: QueryTypes.UPDATE,
+    replacements: { ...values, userId },
+  });
+
+  return findOne(userId);
 };
 
 const remove = async (userId: string) => {
@@ -122,13 +125,13 @@ const remove = async (userId: string) => {
 
   logger.info(`Deleting user with id ${userId}`);
 
-  const result = await sequelize.query(
+  await sequelize.query(
     `
     delete from users where users.id = ${userId};
     `,
     { type: QueryTypes.DELETE }
   );
-  return result;
+  return { message: `User deleted with id ${userId}` };
 };
 
 export { createOne, updateOne, findOne, findAll, remove };
