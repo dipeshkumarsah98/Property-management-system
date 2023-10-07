@@ -5,6 +5,7 @@ import ValidationError from 'errors/badRequestError';
 import NotFoundError from 'errors/notFoundError';
 import { QueryTypes } from 'sequelize';
 import logger from 'utils/logger';
+import { hashPassword } from 'utils/password';
 
 const findOneWithEmail = async (email: string) => {
   logger.info(`Finding user with email ${email}`);
@@ -34,12 +35,19 @@ const createOne = async (userDto: CreateUserDto) => {
 
   logger.info('Creating user');
 
+  const encryptPassword = await hashPassword(password);
+
+  console.log(
+    '🚀 ~ file: user.service.ts:39 ~ createOne ~ encryptPassword:',
+    encryptPassword
+  );
+
   await sequelize.query(
     `
     insert into users (name, email, password, roleid) values (
       '${name}',
       '${email}',
-      '${password}',
+      '${encryptPassword}',
       '${roleId || 1}'
     );`,
     { type: QueryTypes.INSERT }
