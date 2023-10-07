@@ -13,6 +13,7 @@ const sequelize = new Sequelize(
   {
     port: config.port,
     host: config.host,
+    logging: false,
     dialect: config.dialect as Dialect,
   }
 );
