@@ -6,29 +6,26 @@ import * as userService from 'services/user.service';
 
 const getUser: RequestHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
+
   if (!id) {
     throw new ValidationError('No id found', 'please provide id in params');
   }
 
-  const user = await userService.getParticularUser({ id });
+  const user = await userService.findOne(id);
 
   return res.status(200).json(successResponse(200, 'Ok', user));
 };
 
 const createUser: RequestHandler = async (req: Request, res: Response) => {
-  const { firstName, lastName, contact, dob, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   const data = {
-    first_name: firstName,
-    last_name: lastName,
-    phone_number: contact,
-    date_of_birth: dob,
-    login_uuid: '',
+    name,
     email,
     password,
   };
 
-  const user = await userService.createNewUser(data);
+  const user = await userService.createOne(data);
 
   return res.status(201).json(successResponse(201, 'Created', user));
 };
