@@ -4,7 +4,7 @@ const createRoleTable = async () => {
   await sequelize.query(`
       CREATE TABLE IF NOT EXISTS roles(
         id  serial PRIMARY KEY,
-        name varchar (200),
+        name varchar (200) unique,
         description varchar (200),
         createdAt TIMESTAMPTZ DEFAULT NOW() NOT NULL,
         updatedAt TIMESTAMPTZ DEFAULT NOW() NOT NULL
@@ -17,7 +17,7 @@ const createUsertable = async () => {
       CREATE TABLE IF NOT EXISTS users (
         id  serial PRIMARY KEY,
         name varchar (200),
-        email varchar (200),
+        email varchar (200) unique,
         password varchar (255),
         roleId int references roles(id),
         createdAt TIMESTAMPTZ DEFAULT NOW() NOT NULL,
@@ -30,7 +30,7 @@ const createPropertyTypeTable = async () => {
   await sequelize.query(`
       CREATE TABLE IF NOT EXISTS property_type (
         id  serial PRIMARY KEY,
-        name varchar (200),
+        name varchar (200) unique,
         description varchar (200),
         createdAt TIMESTAMPTZ DEFAULT NOW() NOT NULL,
         updatedAt TIMESTAMPTZ DEFAULT NOW() NOT NULL
