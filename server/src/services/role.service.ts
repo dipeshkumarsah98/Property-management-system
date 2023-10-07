@@ -16,7 +16,7 @@ const findOneWithName = async (name: string) => {
   );
 
   if (result.length > 0)
-    throw new NotFoundError(
+    throw new ValidationError(
       'Role name should be unique',
       'Role name should be unique'
     );
@@ -99,6 +99,7 @@ const updateOne = async (roleId: string, updateRoleDto: UpdateRoleDto) => {
   if (description && name) {
     query = `name='${name}', description='${description}'`;
   }
+
   if (query === ``) {
     throw new ValidationError(
       'At lest one field should be update',
@@ -108,7 +109,7 @@ const updateOne = async (roleId: string, updateRoleDto: UpdateRoleDto) => {
 
   logger.info(`Updating role with id ${roleId}`);
 
-  const roleUser = await sequelize.query(
+  await sequelize.query(
     `
     update roles set ${query} where roles.id = ${roleId}
  `,
@@ -116,7 +117,8 @@ const updateOne = async (roleId: string, updateRoleDto: UpdateRoleDto) => {
       type: QueryTypes.UPDATE,
     }
   );
-  return roleUser;
+
+  return findOne(roleId);
 };
 
 const remove = async (roleId: string) => {
