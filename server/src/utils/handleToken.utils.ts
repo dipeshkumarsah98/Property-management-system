@@ -7,7 +7,7 @@ const refreshTokenExpireTime: string = env.REFRESHTOKENEXPIRETIME;
 
 type FieldsType = {
   id: string;
-  uuid: string;
+  role: string;
   email: string;
 };
 
