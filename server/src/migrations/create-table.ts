@@ -18,6 +18,7 @@ const createUsertable = async () => {
         id  serial PRIMARY KEY,
         name varchar (200),
         email varchar (200) unique,
+        refresh_token text,
         password varchar (255),
         roleId int references roles(id),
         createdAt TIMESTAMPTZ DEFAULT NOW() NOT NULL,

@@ -142,4 +142,4 @@ const remove = async (userId: string) => {
   return { message: `User deleted with id ${userId}` };
 };
 
-export { createOne, updateOne, findOne, findAll, remove };
+export { createOne, updateOne, findOne, findAll, remove, findOneWithEmail };
