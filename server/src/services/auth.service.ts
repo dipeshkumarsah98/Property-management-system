@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions */
 import sequelize from 'config/database.config';
+import { CreateUserDto } from 'dto/user.dto';
 import ValidationError from 'errors/badRequestError';
 import NotFoundError from 'errors/notFoundError';
 import ServerError from 'errors/serverError';
@@ -10,6 +11,7 @@ import {
 } from 'utils/handleToken.utils';
 import logger from 'utils/logger';
 import { comparePassword } from 'utils/password';
+import * as userService from 'services/user.service';
 
 interface User {
   id: string;
@@ -18,6 +20,11 @@ interface User {
   password: string;
   role: string;
 }
+export const register = async (createUserDto: CreateUserDto) => {
+  const user = await userService.createOne(createUserDto);
+
+  return user;
+};
 
 /* eslint-disable import/prefer-default-export */
 export const loginParticularUser = async (email: string, password: string) => {
