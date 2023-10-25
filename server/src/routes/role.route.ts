@@ -1,16 +1,18 @@
 import { Router } from 'express';
 import * as roleController from 'controller/role.controller';
+import { validate } from 'middleware/validate';
+import { checkRole } from 'middleware/auth';
 
 const route = Router();
 
-route.get('/', roleController.getAllRoles);
+route.get('/', validate, checkRole(['admin']), roleController.getAllRoles);
 
-route.post('/', roleController.createrole);
+route.get('/:id', validate, checkRole(['admin']), roleController.getrole);
 
-route.get('/:id', roleController.getrole);
+route.post('/', validate, checkRole(['admin']), roleController.createrole);
 
-route.patch('/:id', roleController.updaterole);
+route.patch('/:id', validate, checkRole(['admin']), roleController.updaterole);
 
-route.delete('/:id', roleController.deleterole);
+route.delete('/:id', validate, checkRole(['admin']), roleController.deleterole);
 
 export default route;
