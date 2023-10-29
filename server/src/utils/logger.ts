@@ -6,7 +6,12 @@ const logger: Winston.Logger = Winston.createLogger({
   exitOnError: false,
   format: format.combine(
     format.colorize({
-      colors: { info: 'blue', warning: 'yellow', error: 'red' },
+      colors: {
+        info: 'blue',
+        debug: 'orange',
+        warning: 'yellow',
+        error: 'red',
+      },
     }),
     format.timestamp({ format: 'YYYY-MM-DD HH:MM:SS' }),
     format.printf(({ timestamp, level, message }) => {

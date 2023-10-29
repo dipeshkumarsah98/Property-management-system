@@ -15,7 +15,6 @@ import { corsHandler } from 'middleware/cors';
 import { errorHandler } from 'middleware/errorHandler';
 import { notFoundHandler } from 'middleware/notFound';
 import logger from 'utils/logger';
-import { QueryTypes } from 'sequelize';
 import { migrateDatabase } from 'utils/migration';
 
 const PORT = env.PORT;
@@ -32,13 +31,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec)); // adding d
 })();
 
 app.use('/api/v1/', apiRouter);
-app.use('/test', async (req, res) => {
-  const result = await sequelize.query('select * from users', {
-    type: QueryTypes.SELECT,
-  });
-
-  return res.status(200).json(result);
-});
 
 app.use(notFoundHandler); // Not found middleware. It will get triggered when user try to access invalid route.
 
