@@ -1,27 +1,13 @@
-import mailer from 'config/mailer.config';
+import createJob from 'config/queue.config';
+import { SENT_OTP, WELCOME_MSG } from 'constants/mail.constants';
 import { OtpMailerDto, WelcomeMailerDto } from 'dto/mailer.dto';
-import { sendOtpTemplate, sendWelcomeTemplate } from 'utils/emailTemplate';
 
-const sendOtp = async (otpMailerDto: OtpMailerDto) => {
-  const message = {
-    from: process.env.EMAIL_ADDRESS,
-    to: otpMailerDto.email,
-    subject: `${process.env.APP_NAME} Email Verification`,
-    html: sendOtpTemplate(otpMailerDto),
-  };
-
-  return mailer.sendMail(message);
+const sendOtp = (otpMailerDto: OtpMailerDto) => {
+  createJob(SENT_OTP, otpMailerDto);
 };
 
-const sendWelcome = async (welcomeMailerDto: WelcomeMailerDto) => {
-  const message = {
-    from: process.env.EMAIL_ADDRESS,
-    to: welcomeMailerDto.email,
-    subject: `${process.env.APP_NAME} Email Verification`,
-    html: sendWelcomeTemplate(welcomeMailerDto),
-  };
-
-  return mailer.sendMail(message);
+const sendWelcome = (welcomeMailerDto: WelcomeMailerDto) => {
+  createJob(WELCOME_MSG, welcomeMailerDto);
 };
 
 export { sendOtp, sendWelcome };
