@@ -2,11 +2,16 @@ import env from 'config/env.config';
 import Winston, { format } from 'winston';
 
 const logger: Winston.Logger = Winston.createLogger({
-  level: 'info',
+  level: 'log',
   exitOnError: false,
   format: format.combine(
     format.colorize({
-      colors: { info: 'blue', warning: 'yellow', error: 'red' },
+      colors: {
+        info: 'blue',
+        debug: 'orange',
+        warning: 'yellow',
+        error: 'red',
+      },
     }),
     format.timestamp({ format: 'YYYY-MM-DD HH:MM:SS' }),
     format.printf(({ timestamp, level, message }) => {
