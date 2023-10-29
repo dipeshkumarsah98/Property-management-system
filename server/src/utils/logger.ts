@@ -2,7 +2,7 @@ import env from 'config/env.config';
 import Winston, { format } from 'winston';
 
 const logger: Winston.Logger = Winston.createLogger({
-  level: 'log',
+  level: 'info',
   exitOnError: false,
   format: format.combine(
     format.colorize({
