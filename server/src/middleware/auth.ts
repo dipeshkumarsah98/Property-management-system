@@ -81,6 +81,9 @@ const checkRole =
     next();
   };
 
+/**
+ * @DESC Verify user is accessing itself Middleware
+ */
 const checkItSelf = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
@@ -122,17 +125,9 @@ const checkItSelf = (req: Request, res: Response, next: NextFunction) => {
  */
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const { token } = req.body;
-  if (!token)
-    throw new ValidationError('No Otp token found', 'No OTP Token provided');
-
   logger.info('Verifying OTP');
 
   const isValidToken = verifyOtp(token);
-  console.log('🚀 ~ file: auth.ts:131 ~ verifyToken ~ token:', token);
-  console.log(
-    '🚀 ~ file: auth.ts:131 ~ verifyToken ~ isValidToken:',
-    isValidToken
-  );
 
   if (!isValidToken)
     throw new ValidationError(

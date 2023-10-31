@@ -9,6 +9,9 @@ type SchemaKeys<T> = {
   [K in keyof T]: keyof T[K];
 };
 
+/**
+ * @DESC Validate schema from request body Middleware
+ */
 const validate = <T extends keyof typeof validationSchema>(
   schemaName: T,
   schemaKey: SchemaKeys<typeof validationSchema>[T]

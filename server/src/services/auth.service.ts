@@ -12,16 +12,36 @@ import {
 import logger from 'utils/logger';
 import { comparePassword } from 'utils/password';
 import * as userService from 'services/user.service';
+import { AuthDto } from 'dto/auth.dto';
+import { generateOtp } from 'utils/otp';
+import * as mailerService from 'services/mailer.service';
+import { User } from 'types/user.type';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-}
+// setup method to send opt
+export const sendOtp = async (authDto: Omit<AuthDto, 'otp'>) => {
+  const { email } = authDto;
+
+  logger.info(`Generating OTP to ${email}`);
+
+  const token = generateOtp();
+
+  if (token) {
+    mailerService.sendOtp({ email, name: email.split('@')[0], opt: token });
+
+    return {
+      msg: 'OTP sent successfully',
+    };
+  }
+
+  return null;
+};
+
 export const register = async (createUserDto: CreateUserDto) => {
+  logger.info('Registering new user');
+
   const user = await userService.createOne(createUserDto);
+
+  mailerService.sendWelcome({ email: user.email, name: user.name });
 
   return user;
 };
@@ -40,10 +60,14 @@ export const loginParticularUser = async (email: string, password: string) => {
   }
 
   logger.info('Checking password..');
+
   const isValidPassword = await comparePassword(password, user[0].password);
 
   if (!isValidPassword) {
-    throw new ValidationError('Invalid password', 'Invalid password');
+    throw new ValidationError(
+      'Invalid email or password',
+      'Invalid password or password'
+    );
   }
 
   logger.info('Checking token..');
@@ -68,7 +92,12 @@ export const loginParticularUser = async (email: string, password: string) => {
     throw new ServerError('Something went wrong', 'something went wrong');
 
   logger.info('Sending token..');
-  return { access: accessToken, refresh: refreshToken };
+  return {
+    email,
+    name: user[0].name,
+    access: accessToken,
+    refresh: refreshToken,
+  };
 };
 
 export const refreshParticularUserToken = async (token: string) => {
