@@ -1,7 +1,11 @@
 import env from 'config/env.config';
 import { totp } from 'otplib';
 
-const { OTP_SECRET } = env;
+const { OTP_SECRET, OTP_DURATION_IN_SECS } = env;
+
+totp.options = {
+  step: +OTP_DURATION_IN_SECS,
+};
 
 const generateOtp = () => totp.generate(OTP_SECRET);
 

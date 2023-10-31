@@ -3,8 +3,9 @@ import { Response, Request, NextFunction } from 'express';
 import Jwt from 'jsonwebtoken';
 import UnauthorizedError from 'errors/unauthorizedError';
 import envVars from 'config/env.config';
-import * as userService from 'services/user.service';
 import logger from 'utils/logger';
+import ValidationError from 'errors/badRequestError';
+import { verifyOtp } from 'utils/otp';
 
 /**
  * @DESC Verify JWT from authorization header Middleware
@@ -80,6 +81,9 @@ const checkRole =
     next();
   };
 
+/**
+ * @DESC Verify user is accessing itself Middleware
+ */
 const checkItSelf = (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
@@ -116,4 +120,22 @@ const checkItSelf = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { validateToken, checkRole, checkItSelf };
+/**
+ * @DESC Verify OTP from request body Middleware
+ */
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  const { token } = req.body;
+  logger.info('Verifying OTP');
+
+  const isValidToken = verifyOtp(token);
+
+  if (!isValidToken)
+    throw new ValidationError(
+      'token is expired or invalid.',
+      'The provided token is expire or invalid'
+    );
+
+  next();
+};
+
+export { validateToken, checkRole, checkItSelf, verifyToken };

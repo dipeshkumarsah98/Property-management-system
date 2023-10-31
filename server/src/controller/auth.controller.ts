@@ -4,6 +4,14 @@ import { successResponse } from 'utils/successResponse.utils';
 import * as authService from 'services/auth.service';
 import { CreateUserDto } from 'dto/user.dto';
 
+const sendOtp: RequestHandler = async (req: Request, res: Response) => {
+  const { email } = req.body;
+
+  const message = await authService.sendOtp({ email });
+
+  return res.status(200).json(successResponse(200, 'Ok', message));
+};
+
 const registerUser: RequestHandler = async (req: Request, res: Response) => {
   const { name, roleId, email, password } = req.body;
 
@@ -27,6 +35,7 @@ const loginUser: RequestHandler = async (req: Request, res: Response) => {
 
   return res.status(200).json(successResponse(200, 'Ok', token));
 };
+
 const refreshUserToken: RequestHandler = async (
   req: Request,
   res: Response
@@ -36,4 +45,4 @@ const refreshUserToken: RequestHandler = async (
   return res.status(200).json(successResponse(200, 'Ok', token));
 };
 
-export { registerUser, loginUser, refreshUserToken };
+export { registerUser, loginUser, refreshUserToken, sendOtp };
