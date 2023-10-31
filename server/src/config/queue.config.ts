@@ -1,13 +1,23 @@
 import Queue from 'bull';
-import { processOTPJob, processWelcomeJob } from 'utils/jobProcessors';
+import {
+  processOTPJob,
+  processWelcomeJob,
+  processPasswordResetJob,
+  processPasswordUpdateJob,
+} from 'utils/jobProcessors';
 import logger from 'utils/logger';
-// eslint-disable-next-line import/extensions
-import { SENT_OTP, WELCOME_MSG } from 'constants/mail.constants';
+import {
+  SENT_OTP,
+  WELCOME_MSG,
+  PASSSWORD_RESET,
+  PASSSWORD_UPDATE,
+  MAIL_QUEUE,
+} from 'constants/mail.constants';
 import env from './env.config';
 
 const { REDIS_HOST, REDIS_PORT, REDIS_PASSWORD } = env;
 
-const emailQueue = new Queue('email', {
+const emailQueue = new Queue(MAIL_QUEUE, {
   redis: { port: +REDIS_PORT, host: REDIS_HOST, password: REDIS_PASSWORD },
 });
 
@@ -28,6 +38,8 @@ emailQueue.on('failed', (job, error) => {
 
 emailQueue.process(SENT_OTP, processOTPJob);
 emailQueue.process(WELCOME_MSG, processWelcomeJob);
+emailQueue.process(PASSSWORD_RESET, processPasswordResetJob);
+emailQueue.process(PASSSWORD_UPDATE, processPasswordUpdateJob);
 
 export default function createJob(name: string, data: any) {
   const options = {

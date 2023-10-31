@@ -3,6 +3,23 @@ import { Request, RequestHandler, Response } from 'express';
 import { successResponse } from 'utils/successResponse.utils';
 import * as authService from 'services/auth.service';
 import { CreateUserDto } from 'dto/user.dto';
+import ValidationError from 'errors/badRequestError';
+
+const sendPasswordResetOtp: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const { email } = req.params;
+  if (!email)
+    throw new ValidationError(
+      'Email is required in params',
+      'Email is required in params'
+    );
+
+  const message = await authService.requestPasswordReset(email);
+
+  return res.status(200).json(successResponse(200, 'Ok', message));
+};
 
 const sendOtp: RequestHandler = async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -36,6 +53,16 @@ const loginUser: RequestHandler = async (req: Request, res: Response) => {
   return res.status(200).json(successResponse(200, 'Ok', token));
 };
 
+const changePassword: RequestHandler = async (req: Request, res: Response) => {
+  await authService.resetPassword(req.body.email, req.body.password);
+
+  return res.status(200).json(
+    successResponse(200, 'Ok', {
+      message: 'Password changed successfully',
+    })
+  );
+};
+
 const refreshUserToken: RequestHandler = async (
   req: Request,
   res: Response
@@ -45,4 +72,11 @@ const refreshUserToken: RequestHandler = async (
   return res.status(200).json(successResponse(200, 'Ok', token));
 };
 
-export { registerUser, loginUser, refreshUserToken, sendOtp };
+export {
+  registerUser,
+  loginUser,
+  refreshUserToken,
+  sendOtp,
+  sendPasswordResetOtp,
+  changePassword,
+};

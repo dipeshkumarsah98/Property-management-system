@@ -1,9 +1,12 @@
 import jwt from 'jsonwebtoken';
 import env from 'config/env.config';
 
-const secretKey: string = env.JWT_SECRET_KEY;
-const accessTokenExpireTime: string = env.ACCESSTOKENEXPIRETIME;
-const refreshTokenExpireTime: string = env.REFRESHTOKENEXPIRETIME;
+const {
+  RESETTOKENEXPIRETIME,
+  JWT_SECRET_KEY,
+  REFRESHTOKENEXPIRETIME,
+  ACCESSTOKENEXPIRETIME,
+} = env;
 
 type FieldsType = {
   id: string;
@@ -12,17 +15,23 @@ type FieldsType = {
 };
 
 function generateAccessToken(fields: FieldsType): string {
-  const accessToken = jwt.sign(fields, secretKey, {
-    expiresIn: accessTokenExpireTime,
+  const accessToken = jwt.sign(fields, JWT_SECRET_KEY, {
+    expiresIn: ACCESSTOKENEXPIRETIME,
   });
   return accessToken;
 }
 
 function generateRefreshToken(fields: FieldsType): string {
-  const refereshToken = jwt.sign(fields, secretKey, {
-    expiresIn: refreshTokenExpireTime,
+  const refereshToken = jwt.sign(fields, JWT_SECRET_KEY, {
+    expiresIn: REFRESHTOKENEXPIRETIME,
   });
   return refereshToken;
 }
+function resetPasswordToken(fields: FieldsType & { token: string }): string {
+  const token = jwt.sign(fields, JWT_SECRET_KEY, {
+    expiresIn: RESETTOKENEXPIRETIME,
+  });
+  return token;
+}
 
-export { generateAccessToken, generateRefreshToken };
+export { generateAccessToken, generateRefreshToken, resetPasswordToken };

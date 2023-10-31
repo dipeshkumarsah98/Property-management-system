@@ -36,6 +36,7 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
   });
   return null;
 };
+
 /**
  * @DESC Check Role Middleware
  */
@@ -138,4 +139,49 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { validateToken, checkRole, checkItSelf, verifyToken };
+/**
+ * @DESC Verify reset token from request param Middleware
+ */
+const verifyResetToken = (req: Request, res: Response, next: NextFunction) => {
+  const { token } = req.params;
+
+  logger.info('Verifying password reset token');
+
+  if (!token) {
+    throw new ValidationError(
+      'No token provided',
+      'No token provided in params'
+    );
+  }
+
+  let user: any;
+
+  const key: string = envVars.JWT_SECRET_KEY;
+
+  Jwt.verify(token, key, (err, validUser) => {
+    // if token is invalid or expired
+    if (err) {
+      throw new UnauthorizedError(
+        'Access Denied: Token is invalid or expired.',
+        'Access Denied: Please provide valid token or reset again'
+      );
+    } else {
+      // provided token is valid
+      user = validUser;
+    }
+  });
+
+  const isTokenValid = verifyOtp(user.token || '');
+  if (!isTokenValid) {
+    throw new UnauthorizedError(
+      'Access Denied: Token is invalid or expired.',
+      'Access Denied: Please provide valid token or reset again'
+    );
+  }
+
+  req.body.email = user.email;
+
+  next();
+};
+
+export { validateToken, checkRole, checkItSelf, verifyToken, verifyResetToken };
