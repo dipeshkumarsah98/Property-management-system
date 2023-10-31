@@ -29,6 +29,10 @@ const validationSchema = {
         'string.empty': `"Token" cannot be an empty field`,
       }),
     }),
+    'change-password': Joi.object({
+      password: Joi.string().min(5).required(),
+      cPassword: Joi.ref('password'),
+    }),
   },
   userSchema: {
     createUser: Joi.object({

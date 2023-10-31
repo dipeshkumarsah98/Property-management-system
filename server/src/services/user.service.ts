@@ -12,18 +12,29 @@ const findOneWithEmail = async (email: string) => {
 
   const result = await sequelize.query(
     `
-  select * from users where users.email = '${email}' ;
+    select users.id, users.name, users.email, roles.name as role, users.createdat, users.updatedat 
+  from users left join roles on users.roleid = roles.id where users.email = '${email}';
     `,
     { type: QueryTypes.SELECT }
   );
 
-  if (result.length > 0)
-    throw new ValidationError(
-      'Email should be unique',
-      'Email should be unique'
-    );
-
   logger.info(`Sending user with email ${email}`);
+
+  return result;
+};
+
+const changePassword = async (email: string, password: string) => {
+  logger.info('Changing password');
+
+  const encryptPassword = await hashPassword(password);
+
+  const query = `UPDATE users SET password = '${encryptPassword}' where email = '${email}'; `;
+
+  await sequelize.query(query, { type: QueryTypes.UPDATE });
+
+  logger.info('Password changed successfully');
+
+  const result = await findOneWithEmail(email);
 
   return result;
 };
@@ -31,16 +42,17 @@ const findOneWithEmail = async (email: string) => {
 const createOne = async (userDto: CreateUserDto) => {
   const { email, name, password, roleId } = userDto;
 
-  await findOneWithEmail(email);
+  const result = await findOneWithEmail(email);
+
+  if (result.length > 0)
+    throw new ValidationError(
+      'Email should be unique',
+      'Email should be unique'
+    );
 
   logger.info('Creating user');
 
   const encryptPassword = await hashPassword(password);
-
-  console.log(
-    '🚀 ~ file: user.service.ts:39 ~ createOne ~ encryptPassword:',
-    encryptPassword
-  );
 
   await sequelize.query(
     `
@@ -142,4 +154,12 @@ const remove = async (userId: string) => {
   return { message: `User deleted with id ${userId}` };
 };
 
-export { createOne, updateOne, findOne, findAll, remove, findOneWithEmail };
+export {
+  createOne,
+  updateOne,
+  findOne,
+  findAll,
+  remove,
+  findOneWithEmail,
+  changePassword,
+};

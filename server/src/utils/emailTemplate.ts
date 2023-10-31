@@ -2,7 +2,7 @@ import env from 'config/env.config';
 import { OtpMailerDto, WelcomeMailerDto } from 'dto/mailer.dto';
 import Mailgen from 'mailgen';
 
-const { APP_NAME } = env;
+const { APP_NAME, CLIENT_URL } = env;
 
 const MailGenerator = new Mailgen({
   theme: 'default',
@@ -51,6 +51,51 @@ export function sendWelcomeTemplate(welcomeMailerDto: WelcomeMailerDto) {
         email,
       },
       outro: 'Thank you for joining with us',
+    },
+  };
+
+  return MailGenerator.generate(template);
+}
+
+export function sendPasswordUpdateTemplate(dto: WelcomeMailerDto) {
+  const { name, email } = dto;
+  const date = new Date();
+
+  const template = {
+    body: {
+      name,
+      title: `You've successfully updated your password.`,
+      intro: `${name}, the password for email <strong> ${email} </strong> has been successfully updated. Here are the details:`,
+      dictionary: {
+        name,
+        email,
+        date,
+      },
+      outro: `If you don't recognize this action, we recommend you do an additional password reset. If you need assistance, please connect with our Support team. <br />`,
+    },
+  };
+
+  return MailGenerator.generate(template);
+}
+
+export function sendPasswordResetTemplate(passwordResetDto: OtpMailerDto) {
+  const { name, email, opt } = passwordResetDto;
+
+  const template = {
+    body: {
+      name,
+      title: `Reset your password of ${email}`,
+      intro: `If you are not trying to reset your password please ignore this mail.`,
+      action: {
+        instructions: `<br><strong>You can reset your password using the button below.</strong>`,
+        button: {
+          color: '#414141',
+          text: 'Reset Password',
+          link: `https://${CLIENT_URL}/passwordReset?token=${opt}`,
+        },
+      },
+      outro:
+        'Please do not reply to this email. Emails sent to this address will not be answered.',
     },
   };
 

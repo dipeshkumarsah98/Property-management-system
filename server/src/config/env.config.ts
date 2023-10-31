@@ -13,6 +13,7 @@ const envVarsSchema = Joi.object()
     PORT: Joi.number().positive().required(),
     JWT_SECRET_KEY: Joi.string().required(),
     APP_NAME: Joi.string().required(),
+    CLIENT_URL: Joi.string().required(),
     EMAIL_SERVICE: Joi.string().required(),
     SMTP_PORT: Joi.string().required(),
     OTP_SECRET: Joi.string().required(),

@@ -1,9 +1,18 @@
 import { Router } from 'express';
 import * as authController from 'controller/auth.controller';
-import { verifyToken } from 'middleware/auth';
+import { verifyResetToken, verifyToken } from 'middleware/auth';
 import { validate } from 'middleware/validate';
 
 const route = Router();
+
+route.get('/reset/:email', authController.sendPasswordResetOtp);
+
+route.post(
+  '/change-password/:token',
+  validate('authSchema', 'change-password'),
+  verifyResetToken,
+  authController.changePassword
+);
 
 route.post(
   '/send-otp',

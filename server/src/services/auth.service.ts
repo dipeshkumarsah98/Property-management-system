@@ -46,7 +46,14 @@ export const register = async (createUserDto: CreateUserDto) => {
   return user;
 };
 
-/* eslint-disable import/prefer-default-export */
+export const resetPassword = async (email: string, password: string) => {
+  const user: any = await userService.changePassword(email, password);
+
+  mailerService.passwordUpdate({ email: user[0].email, name: user[0].name });
+
+  return user;
+};
+
 export const loginParticularUser = async (email: string, password: string) => {
   logger.info('Checking user exist of not');
 
@@ -136,4 +143,33 @@ export const refreshParticularUserToken = async (token: string) => {
   }
   logger.info('Sending new tokens');
   return { access: newAccessToken, refresh: newRefreshToken };
+};
+
+export const requestPasswordReset = async (email: string) => {
+  logger.info(`Sending Reset password OTP to ${email}`);
+
+  const user: User[] | [] = await sequelize.query(
+    `select users.id, users.name, users.email, users.password, roles.name as role from users left join roles on roles.id=users.roleid where users.email = '${email}';`,
+    { type: QueryTypes.SELECT }
+  );
+
+  if (user.length < 1) {
+    throw new NotFoundError('No user found.', 'No user found with given email');
+  }
+
+  const token = generateAccessToken({
+    email: user[0].email,
+    role: user[0].role,
+    id: user[0].id,
+  });
+
+  mailerService.passwordReset({
+    email,
+    name: user[0].name,
+    opt: token,
+  });
+
+  return {
+    message: 'Please check your email!',
+  };
 };
