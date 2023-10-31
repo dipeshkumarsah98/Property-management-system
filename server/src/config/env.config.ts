@@ -17,6 +17,7 @@ const envVarsSchema = Joi.object()
     EMAIL_SERVICE: Joi.string().required(),
     SMTP_PORT: Joi.string().required(),
     OTP_SECRET: Joi.string().required(),
+    RESETTOKENEXPIRETIME: Joi.string().required(),
     OTP_DURATION_IN_SECS: Joi.string().required(),
     REDIS_HOST: Joi.string().required(),
     REDIS_PORT: Joi.string().required(),

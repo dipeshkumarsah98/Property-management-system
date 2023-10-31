@@ -8,6 +8,7 @@ import { QueryTypes } from 'sequelize';
 import {
   generateAccessToken,
   generateRefreshToken,
+  resetPasswordToken,
 } from 'utils/handleToken.utils';
 import logger from 'utils/logger';
 import { comparePassword } from 'utils/password';
@@ -156,11 +157,13 @@ export const requestPasswordReset = async (email: string) => {
   if (user.length < 1) {
     throw new NotFoundError('No user found.', 'No user found with given email');
   }
+  const otp = generateOtp();
 
-  const token = generateAccessToken({
+  const token = resetPasswordToken({
     email: user[0].email,
     role: user[0].role,
     id: user[0].id,
+    token: otp,
   });
 
   mailerService.passwordReset({

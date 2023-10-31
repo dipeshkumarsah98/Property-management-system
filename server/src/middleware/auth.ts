@@ -171,6 +171,14 @@ const verifyResetToken = (req: Request, res: Response, next: NextFunction) => {
     }
   });
 
+  const isTokenValid = verifyOtp(user.token || '');
+  if (!isTokenValid) {
+    throw new UnauthorizedError(
+      'Access Denied: Token is invalid or expired.',
+      'Access Denied: Please provide valid token or reset again'
+    );
+  }
+
   req.body.email = user.email;
 
   next();
