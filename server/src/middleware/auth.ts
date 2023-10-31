@@ -3,8 +3,9 @@ import { Response, Request, NextFunction } from 'express';
 import Jwt from 'jsonwebtoken';
 import UnauthorizedError from 'errors/unauthorizedError';
 import envVars from 'config/env.config';
-import * as userService from 'services/user.service';
 import logger from 'utils/logger';
+import ValidationError from 'errors/badRequestError';
+import { verifyOtp } from 'utils/otp';
 
 /**
  * @DESC Verify JWT from authorization header Middleware
@@ -116,4 +117,30 @@ const checkItSelf = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { validateToken, checkRole, checkItSelf };
+/**
+ * @DESC Verify OTP from request body Middleware
+ */
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  const { token } = req.body;
+  if (!token)
+    throw new ValidationError('No Otp token found', 'No OTP Token provided');
+
+  logger.info('Verifying OTP');
+
+  const isValidToken = verifyOtp(token);
+  console.log('🚀 ~ file: auth.ts:131 ~ verifyToken ~ token:', token);
+  console.log(
+    '🚀 ~ file: auth.ts:131 ~ verifyToken ~ isValidToken:',
+    isValidToken
+  );
+
+  if (!isValidToken)
+    throw new ValidationError(
+      'token is expired or invalid.',
+      'The provided token is expire or invalid'
+    );
+
+  next();
+};
+
+export { validateToken, checkRole, checkItSelf, verifyToken };
