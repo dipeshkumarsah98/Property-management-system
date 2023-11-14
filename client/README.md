@@ -13,7 +13,7 @@ The client-side of the Property Management System is responsible for providing a
 ## Client Technologies Used
 
 - React
-- TypeScript
+- Javascript
 
 ## Project Structure
 
@@ -21,7 +21,6 @@ The client-side of the Property Management System is responsible for providing a
 Below is a description of the primary folders in this project:
 
 client/
-  tsconfig.json # Typescript configuration
   vite.config.ts # Vite configuration
   src/ # Contains the source code.
     components/ # Reusable React components.
