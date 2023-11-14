@@ -43,11 +43,13 @@ const createPropertyTable = async () => {
   await sequelize.query(`
       CREATE TABLE IF NOT EXISTS properties (
         id  serial PRIMARY KEY,
+        name varchar (200),
         location varchar (500),
         description varchar (200),
         price Int,
         size varchar (200),
         amenities varchar (200),
+        slug varchar (200) unique,
         status varchar (200),
         images varchar (200),
         typeId int references property_type(id),

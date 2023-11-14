@@ -55,6 +55,31 @@ const validationSchema = {
       description: Joi.string(),
     }),
   },
+  propertySchema: {
+    createProperty: Joi.object({
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      location: Joi.string().required(),
+      price: Joi.number().required(),
+      images: Joi.string().required(),
+      status: Joi.string().required(),
+      amentities: Joi.string().required(),
+      size: Joi.string().required(),
+      typeId: Joi.number().required(),
+      userId: Joi.number().required(),
+    }),
+    updateProperty: Joi.object({
+      name: Joi.string(),
+      description: Joi.string(),
+      location: Joi.string(),
+      images: Joi.string(),
+      status: Joi.string(),
+      amentities: Joi.string(),
+      price: Joi.number(),
+      size: Joi.string(),
+      typeId: Joi.string(),
+    }),
+  },
 };
 
 export default validationSchema;
