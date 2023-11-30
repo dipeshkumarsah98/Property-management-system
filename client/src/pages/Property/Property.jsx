@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { getProperty, removeBooking } from "../../utils/api";
 import { PuffLoader } from "react-spinners";
-import { AiFillHeart } from "react-icons/ai";
 import "./Property.css";
 
 import { FaShower } from "react-icons/fa";
@@ -13,10 +12,10 @@ import Map from "../../components/Map/Map";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import { useAuth0 } from "@auth0/auth0-react";
 import BookingModal from "../../components/BookingModal/BookingModal";
-import UserDetailContext from "../../context/UserDetailContext.js";
 import { Button } from "@mantine/core";
 import { toast } from "react-toastify";
 import Heart from "../../components/Heart/Heart";
+import { useUserDetail } from "src/context/UserDetailContext";
 const Property = () => {
   const { pathname } = useLocation();
   const id = pathname.split("/").slice(-1)[0];
@@ -31,7 +30,7 @@ const Property = () => {
   const {
     userDetails: { token, bookings },
     setUserDetails,
-  } = useContext(UserDetailContext);
+  } = useUserDetail();
 
   const { mutate: cancelBooking, isLoading: cancelling } = useMutation({
     mutationFn: () => removeBooking(id, user?.email, token),
@@ -65,23 +64,26 @@ const Property = () => {
     );
   }
 
+  console.log("🚀 ~ file: Property.jsx:23 ~ Property ~ data:", data);
   return (
     <div className="wrapper">
       <div className="flexColStart paddings innerWidth property-container">
         {/* like button */}
         <div className="like">
-          <Heart id={id}/>
+          <Heart id={id} />
         </div>
 
         {/* image */}
-        <img src={data?.image} alt="home image" />
+        <img src={data?.images} alt="home image" />
 
         <div className="flexCenter property-details">
           {/* left */}
           <div className="flexColStart left">
             {/* head */}
             <div className="flexStart head">
-              <span className="primaryText">{data?.title}</span>
+              <span className="primaryText">
+                {data?.name || "propertyname"}
+              </span>
               <span className="orangeText" style={{ fontSize: "1.5rem" }}>
                 $ {data?.price}
               </span>
@@ -89,22 +91,28 @@ const Property = () => {
 
             {/* facilities */}
             <div className="flexStart facilities">
-              {/* bathrooms */}
+              {/* bathrooms
               <div className="flexStart facility">
                 <FaShower size={20} color="#1F3E72" />
                 <span>{data?.facilities?.bathrooms} Bathrooms</span>
               </div>
-
-              {/* parkings */}
+*/}
+              Status
               <div className="flexStart facility">
-                <AiTwotoneCar size={20} color="#1F3E72" />
-                <span>{data?.facilities.parkings} Parking</span>
+                {/* <AiTwotoneCar size={20} color="#1F3E72" /> */}
+                <span
+                  style={{
+                    color: data?.status === "rent" ? "green" : "red",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {data?.status}
+                </span>
               </div>
-
-              {/* rooms */}
-              <div className="flexStart facility">
+              Size
+              <div className="flexStart facility flex">
                 <MdMeetingRoom size={20} color="#1F3E72" />
-                <span>{data?.facilities.bedrooms} Room/s</span>
+                <span>{data?.size} </span>
               </div>
             </div>
 
@@ -119,9 +127,8 @@ const Property = () => {
             <div className="flexStart" style={{ gap: "1rem" }}>
               <MdLocationPin size={25} />
               <span className="secondaryText">
-                {data?.address}{" "}
-                {data?.city}{" "}
-                {data?.country}
+                {/* {data?.address} {data?.city} {data?.country} */}
+                {data?.location}
               </span>
             </div>
 

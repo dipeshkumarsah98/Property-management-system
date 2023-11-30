@@ -9,35 +9,35 @@ const AddLocation = ({ propertyDetails, setPropertyDetails, nextStep }) => {
   const { getAll } = useCountries();
   const form = useForm({
     initialValues: {
-      country: propertyDetails?.country,
-      city: propertyDetails?.city,
-      address: propertyDetails?.address,
+      location: propertyDetails?.location,
+      // country: propertyDetails?.country,
+      // city: propertyDetails?.city,
+      // address: propertyDetails?.address,
     },
 
     validate: {
-      country: (value) => validateString(value),
-      city: (value) => validateString(value),
-      address: (value) => validateString(value),
+      location: (value) => validateString(value),
+      // country: (value) => validateString(value),
+      // city: (value) => validateString(value),
+      // address: (value) => validateString(value),
     },
   });
 
+  const { location } = form.values;
 
-  const { country, city, address } = form.values;
-
-
-  const handleSubmit = ()=> {
-    const {hasErrors} = form.validate();
-    if(!hasErrors) {
-        setPropertyDetails((prev)=> ({...prev, city, address, country}))
-        nextStep()
+  const handleSubmit = () => {
+    const { hasErrors } = form.validate();
+    if (!hasErrors) {
+      setPropertyDetails((prev) => ({ ...prev, location }));
+      nextStep();
     }
-  }
+  };
   return (
     <form
-    onSubmit={(e)=>{
+      onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit()
-    }}
+        handleSubmit();
+      }}
     >
       <div
         className="flexCenter"
@@ -52,36 +52,36 @@ const AddLocation = ({ propertyDetails, setPropertyDetails, nextStep }) => {
         {/* inputs */}
 
         <div className="flexColStart" style={{ flex: 1, gap: "1rem" }}>
-          <Select
+          {/* <Select
             w={"100%"}
             withAsterisk
             label="Country"
             clearable
             searchable
             data={getAll()}
-            {...form.getInputProps("country", { type: "input" })}
-          />
+            {...form.getInputProps("location", { type: "input" })}
+          /> */}
 
           <TextInput
             w={"100%"}
             withAsterisk
-            label="City"
-            {...form.getInputProps("city", { type: "input" })}
+            label="location"
+            {...form.getInputProps("location", { type: "input" })}
           />
 
-          <TextInput
+          {/* <TextInput
             w={"100%"}
             withAsterisk
             label="Address"
             {...form.getInputProps("address", { type: "input" })}
-          />
+          /> */}
         </div>
 
         {/* right side */}
 
-        <div style={{ flex: 1 }}>
+        {/* <div style={{ flex: 1 }}>
           <Map address={address} city={city} country={country} />
-        </div>
+        </div> */}
       </div>
 
       <Group position="center" mt={"xl"}>

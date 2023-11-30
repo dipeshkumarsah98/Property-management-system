@@ -1,13 +1,11 @@
 import React from "react";
-import { useQuery } from "react-query";
-import { getAllProperties } from "../utils/api";
 import useApi from "./useApi";
 
-const useProperties = () => {
+const usePropertyType = () => {
   const { isLoading, isError, data, fetchData } = useApi();
 
   React.useEffect(() => {
-    fetchData("/property");
+    fetchData("/property-type");
   }, []);
 
   return {
@@ -17,4 +15,4 @@ const useProperties = () => {
   };
 };
 
-export default useProperties;
+export default usePropertyType;

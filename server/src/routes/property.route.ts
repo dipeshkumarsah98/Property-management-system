@@ -11,8 +11,8 @@ route.get('/:id', propertyController.getOne);
 
 route.post(
   '/',
-  validateToken,
-  validate('propertySchema', 'createProperty'),
+  // validateToken,
+  // validate('propertySchema', 'createProperty'),
   propertyController.createOne
 );
 

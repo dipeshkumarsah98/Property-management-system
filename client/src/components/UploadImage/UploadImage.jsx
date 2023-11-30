@@ -12,7 +12,7 @@ const UploadImage = ({
   const cloudinaryRef = useRef();
   const widgetRef = useRef();
   const handleNext = () => {
-    setPropertyDetails((prev) => ({ ...prev, image: imageURL }));
+    setPropertyDetails((prev) => ({ ...prev, images: imageURL }));
     nextStep();
   };
   useEffect(() => {

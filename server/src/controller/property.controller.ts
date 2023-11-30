@@ -22,6 +22,10 @@ const getOne: RequestHandler = async (req: Request, res: Response) => {
 };
 
 const createOne: RequestHandler = async (req: Request, res: Response) => {
+  console.log(
+    '🚀 ~ file: property.controller.ts:26 ~ constcreateOne:RequestHandler= ~ req.body:',
+    req.body
+  );
   const propertyType = await propertyService.createOne(req.body);
 
   return res.status(201).json(successResponse(201, 'Created', propertyType));

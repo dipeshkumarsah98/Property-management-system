@@ -4,14 +4,14 @@ import useProperties from "../../hooks/useProperties";
 import { PuffLoader } from "react-spinners";
 import PropertyCard from "../../components/PropertyCard/PropertyCard";
 import "../Properties/Properties.css";
-import UserDetailContext from "../../context/UserDetailContext";
+import { useUserDetail } from "src/context/UserDetailContext";
 
 const Favourites = () => {
   const { data, isError, isLoading } = useProperties();
   const [filter, setFilter] = useState("");
   const {
     userDetails: { favourites },
-  } = useContext(UserDetailContext);
+  } = useUserDetail();
 
   if (isError) {
     return (

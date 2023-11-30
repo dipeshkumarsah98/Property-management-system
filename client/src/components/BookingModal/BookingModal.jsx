@@ -2,16 +2,16 @@ import React, { useContext, useState } from "react";
 import { Modal, Button } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useMutation } from "react-query";
-import UserDetailContext from "../../context/UserDetailContext.js";
 import { bookVisit } from "../../utils/api.js";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { useUserDetail } from "src/context/UserDetailContext.jsx";
 const BookingModal = ({ opened, setOpened, email, propertyId }) => {
   const [value, setValue] = useState(null);
   const {
     userDetails: { token },
     setUserDetails,
-  } = useContext(UserDetailContext);
+  } = useUserDetail();
 
   const handleBookingSuccess = () => {
     toast.success("You have booked your visit", {
@@ -43,7 +43,7 @@ const BookingModal = ({ opened, setOpened, email, propertyId }) => {
       title="Select your date of visit"
       centered
     >
-      <div className="flexColCenter" style={{gap: "1rem"}}>
+      <div className="flexColCenter" style={{ gap: "1rem" }}>
         <DatePicker value={value} onChange={setValue} minDate={new Date()} />
         <Button disabled={!value || isLoading} onClick={() => mutate()}>
           Book visit
