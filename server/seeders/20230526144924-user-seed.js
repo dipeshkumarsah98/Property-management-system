@@ -6,7 +6,43 @@ const { faker } = require('@faker-js/faker');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    function encryPassword(pass) {
+      const salt = bcrypt.genSaltSync(10, 'a');
+      const password = bcrypt.hashSync(pass, salt);
+      return password;
+    }
+    await queryInterface.bulkInsert('roles', [
+      {
+        name: 'admin',
+      },
+    ]);
+
+    await queryInterface.bulkInsert('users', [
+      {
+        name: 'dipesh',
+        email: 'dipeshsah98@gmail.com',
+        password: encryPassword('dipesh@123'),
+        roleid: 1,
+      },
+      {
+        name: 'keshav',
+        email: 'keshav@gmail.com',
+        password: encryPassword('keshav@123'),
+        roleid: 1,
+      },
+    ]);
+
+    await queryInterface.bulkInsert('property_type', [
+      {
+        name: 'flat',
+      },
+      {
+        name: 'house',
+      },
+    ]);
+
     faker.seed(10); // it will help to generate same data in every machine
+
     const generateImageURL = () =>
       faker.image.urlLoremFlickr({
         category: 'product',
@@ -34,12 +70,30 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete(
-      'login_credentials',
+      'properties',
       {},
       {
         restartIdentity: true,
         cascade: true,
         truncate: true,
+      }
+    );
+    await queryInterface.bulkDelete(
+      'property_type',
+      {},
+      {
+        restartIdentity: true,
+        truncate: true,
+        cascade: true,
+      }
+    );
+    await queryInterface.bulkDelete(
+      'roles',
+      {},
+      {
+        restartIdentity: true,
+        truncate: true,
+        cascade: true,
       }
     );
     await queryInterface.bulkDelete(

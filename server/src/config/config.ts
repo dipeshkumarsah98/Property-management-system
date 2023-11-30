@@ -78,5 +78,4 @@ if (
     dialect: 'postgresql',
   };
 }
-
 export = config;

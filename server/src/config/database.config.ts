@@ -5,7 +5,6 @@ import Config from 'config/config';
 type Dialect = 'postgres';
 const { NODE_ENV } = env;
 const config = Config[NODE_ENV];
-
 const sequelize = new Sequelize(
   config.database,
   config.username,
