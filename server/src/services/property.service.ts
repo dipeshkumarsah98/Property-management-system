@@ -71,7 +71,7 @@ const findAll = async () => {
 
   const properties = await sequelize.query(
     `
-    select properties.id, properties.location, properties.description, properties.price, properties.size, properties.slug,
+    select properties.id, properties.name, properties.location, properties.description, properties.price, properties.size, properties.slug,
     properties.status, properties.images, property_type.name as type from properties left 
     join property_type on properties.typeId = property_type.id;
  
@@ -86,7 +86,7 @@ const findOne = async (id: string) => {
 
   const result = await sequelize.query(
     `
-    select properties.id, properties.location, properties.description, properties.price, properties.size, properties.slug,
+    select properties.id, properties.name, properties.location, properties.description, properties.price, properties.size, properties.slug,
     properties.status, properties.images, property_type.name as type from properties left 
     join property_type on properties.typeId = property_type.id where properties.id = ${id};
     `,

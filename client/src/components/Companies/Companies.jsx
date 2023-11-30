@@ -1,8 +1,8 @@
 import React from "react";
-import './Companies.css'
+import "./Companies.css";
 const Companies = () => {
   return (
-    <section className="c-wrapper">
+    <section className="c-wrapper" style={{ backgroundColor: "white" }}>
       <div className="paddings innerWidth flexCenter c-container">
         <img src="./prologis.png" alt="" />
         <img src="./tower.png" alt="" />
